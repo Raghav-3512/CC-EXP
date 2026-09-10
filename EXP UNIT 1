@@ -1,0 +1,274 @@
+#Search in Rotated Sorted Array
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target)
+                return mid;
+
+            // Left half is sorted
+            if (nums[left] <= nums[mid]) {
+                if (target >= nums[left] && target < nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            // Right half is sorted
+            else {
+                if (target > nums[mid] && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+
+        return -1;
+    }
+};
+
+
+
+
+
+
+
+#Search Insert Position
+
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int low = 0, high = nums.size() - 1;
+        
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            
+            if (nums[mid] == target)
+                return mid;
+            
+            else if (nums[mid] < target)
+                low = mid + 1;
+            
+            else
+                high = mid - 1;
+        }
+        
+        return low;
+    }
+};
+
+
+
+
+
+
+
+#Contains Duplicate II
+
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {
+                if (i - map.get(nums[i]) <= k) {
+                    return true;
+                }
+            }
+            map.put(nums[i], i);
+        }
+
+        return false;
+    }
+}
+
+
+
+
+
+
+#Palindrome Linked List
+
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) return true;
+
+        // Find middle
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Reverse second half
+        ListNode prev = null;
+        while (slow != null) {
+            ListNode next = slow.next;
+            slow.next = prev;
+            prev = slow;
+            slow = next;
+        }
+
+        // Compare both halves
+        ListNode first = head;
+        ListNode second = prev;
+
+        while (second != null) {
+            if (first.val != second.val) {
+                return false;
+            }
+            first = first.next;
+            second = second.next;
+        }
+
+        return true;
+    }
+}
+
+#Implement Queue using Stacks
+
+class MyQueue {
+public:
+    stack<int> s1, s2;
+
+    MyQueue() {
+        
+    }
+
+    void push(int x) {
+        s1.push(x);
+    }
+
+    int pop() {
+        peek();
+        int ans = s2.top();
+        s2.pop();
+        return ans;
+    }
+
+    int peek() {
+        if (s2.empty()) {
+            while (!s1.empty()) {
+                s2.push(s1.top());
+                s1.pop();
+            }
+        }
+        return s2.top();
+    }
+
+    bool empty() {
+        return s1.empty() && s2.empty();
+    }
+};
+
+
+
+
+
+
+
+#Largest Rectangle in Histogram
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> st;
+        int maxArea = 0;
+        int n = heights.size();
+
+        for (int i = 0; i <= n; i++) {
+            int currHeight = (i == n) ? 0 : heights[i];
+
+            while (!st.empty() && heights[st.top()] > currHeight) {
+                int height = heights[st.top()];
+                st.pop();
+
+                int width;
+
+                if (st.empty())
+                    width = i;
+                else
+                    width = i - st.top() - 1;
+
+                maxArea = max(maxArea, height * width);
+            }
+
+            st.push(i);
+        }
+
+        return maxArea;
+    }
+};
+
+
+
+
+
+
+
+#Odd Even Linked List
+
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        if (head == NULL || head->next == NULL)
+            return head;
+
+        ListNode* odd = head;
+        ListNode* even = head->next;
+        ListNode* evenHead = even;
+
+        while (even != NULL && even->next != NULL) {
+            odd->next = even->next;
+            odd = odd->next;
+
+            even->next = odd->next;
+            even = even->next;
+        }
+
+        odd->next = evenHead;
+
+        return head;
+    }
+};
+
+
+
+
+
+
+
+
+#Product of Array Except Self
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> answer(n, 1);
+
+        // Left products
+        int prefix = 1;
+        for (int i = 0; i < n; i++) {
+            answer[i] = prefix;
+            prefix *= nums[i];
+        }
+
+        // Right products
+        int suffix = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            answer[i] *= suffix;
+            suffix *= nums[i];
+        }
+
+        return answer;
+    }
+};
