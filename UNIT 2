@@ -27,6 +27,8 @@ public:
 
 
 
+
+
 #To implement a backtracking algorithm to find all unique combinations of numbers that add up to a given target, where each number can be used only once.
 class Solution {
 public:
@@ -68,3 +70,37 @@ public:
         return ans;
     }
 };
+
+
+
+
+
+
+
+
+
+# To implement a recursive algorithm to find the Lowest Common Ancestor (LCA) of two given nodes in a binary tree.
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root == nullptr || root == p || root == q) {
+            return root;
+        }
+
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+
+        if (left != nullptr && right != nullptr) {
+            return root;
+        }
+
+        return left != nullptr ? left : right;
+    }
+};
+
+
+
+
+
+
