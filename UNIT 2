@@ -29,6 +29,8 @@ public:
 
 
 
+
+
 #To implement a backtracking algorithm to find all unique combinations of numbers that add up to a given target, where each number can be used only once.
 class Solution {
 public:
@@ -79,6 +81,7 @@ public:
 
 
 
+
 # To implement a recursive algorithm to find the Lowest Common Ancestor (LCA) of two given nodes in a binary tree.
 
 class Solution {
@@ -100,6 +103,63 @@ public:
 };
 
 
+
+
+
+
+
+
+
+#To implement a program to repeatedly add the digits of a number until the result becomes a single digit.
+class Solution {
+public:
+    int addDigits(int num) {
+        while (num >= 10) {
+            int sum = 0;
+            
+            while (num > 0) {
+                sum += num % 10;
+                num /= 10;
+            }
+            
+            num = sum;
+        }
+        
+        return num;
+    }
+};
+
+
+
+
+
+
+
+
+
+
+#To implement a program to find the duplicate number in an array without modifying the array and using constant extra space.
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int slow = nums[0];
+        int fast = nums[0];
+
+        do {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while (slow != fast);
+
+        slow = nums[0];
+
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+
+        return slow;
+    }
+};
 
 
 
