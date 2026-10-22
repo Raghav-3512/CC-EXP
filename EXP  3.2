@@ -1,0 +1,91 @@
+#Aim
+Given an m x n 2D binary grid where '1' represents land and '0' represents water, return the number of islands. An island is formed by connecting adjacent lands 
+horizontally or vertically. You may assume all four edges of the grid are surrounded by water.
+
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    void dfs(vector<vector<char>>& grid, int i, int j) {
+        int m = grid.size();
+        int n = grid[0].size();
+
+        if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] == '0')
+            return;
+
+        grid[i][j] = '0';
+
+        dfs(grid, i + 1, j);
+        dfs(grid, i - 1, j);
+        dfs(grid, i, j + 1);
+        dfs(grid, i, j - 1);
+    }
+
+    int numIslands(vector<vector<char>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        int count = 0;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    count++;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+
+        return count;
+    }
+};
+
+
+
+
+
+
+#Aim
+There is a bi-directional graph with n vertices, where each vertex is labeled from 0 to n - 1. The edges are given as a 2D array edges, where each edges[i] = [ui, v] 
+denotes a bi-directional edge between vertex ui and vertex vi. Given edges and the integers n, source and destination, determine whether a valid path exists from 
+source to destination, returning true if such a path exists and false otherwise.
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        vector<vector<int>> graph(n);
+
+        for (auto& edge : edges) {
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+
+        vector<bool> visited(n, false);
+        vector<int> q;
+        q.push_back(source);
+        visited[source] = true;
+
+        int front = 0;
+
+        while (front < q.size()) {
+            int node = q[front++];
+
+            if (node == destination)
+                return true;
+
+            for (int neighbor : graph[node]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    q.push_back(neighbor);
+                }
+            }
+        }
+
+        return false;
+    }
+};
+
